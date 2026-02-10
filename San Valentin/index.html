@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Para mi niña linda 🌹</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@300;600;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
+    <style>
+        :root {
+            --primary: #ff4d6d;
+            --secondary: #ff758f;
+            --glass: rgba(255, 255, 255, 0.85);
+            --shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            touch-action: manipulation;
+        }
+
+        body {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Montserrat', sans-serif;
+            /* TU IMAGEN AQUÍ */
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('Fondo.png');
+            background-size: cover;
+            background-position: center;
+            overflow: hidden;
+            perspective: 1000px;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 400px;
+            z-index: 10;
+        }
+
+        .card {
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: var(--shadow);
+            padding: 40px 25px;
+            text-align: center;
+            transition: all 0.5s ease;
+        }
+
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            color: var(--primary);
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            animation: heartBeat 1.5s infinite;
+        }
+
+        @keyframes heartBeat {
+            0% { transform: scale(1); }
+            14% { transform: scale(1.1); }
+            28% { transform: scale(1); }
+        }
+
+        p {
+            font-size: 1.1rem;
+            color: #2b2d42;
+            line-height: 1.6;
+            font-weight: 500;
+            margin-bottom: 30px;
+        }
+
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+            position: relative;
+        }
+
+        button {
+            border: none;
+            border-radius: 50px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        #btn-yes {
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 18px 45px;
+            width: 100%;
+            font-size: 1.2rem;
+            box-shadow: 0 10px 20px rgba(255, 77, 109, 0.3);
+            z-index: 100;
+        }
+
+        #btn-no {
+            background: #8d99ae;
+            color: white;
+            padding: 12px 30px;
+            font-size: 0.9rem;
+            position: fixed; /* Movilidad total por pantalla */
+            z-index: 50;
+        }
+
+        /* Pantalla Final */
+        #response-section {
+            display: none;
+        }
+
+        .final-msg {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #d63384;
+        }
+
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="card" id="main-card">
+            <div id="ask-section">
+                <h1>Holaaa mi amochitoooo 💗</h1>
+                <p>Desde que te conocí me has vuelto el hombre más feliz del mundo. Eres increíble y quería preguntarte algo muy especial...</p>
+                <p style="font-weight: 800; color: #ff4d6d;">¿Quieres ser mi San Valentín? 💌</p>
+                
+                <div class="btn-group">
+                    <button id="btn-yes" onclick="celebrate()">¡SÍ, CLARO! ❤️</button>
+                    <button id="btn-no" ontouchstart="moveNo()" onmouseover="moveNo()">No</button>
+                </div>
+            </div>
+
+            <div id="response-section">
+                <h1>¡SÍIIIIII! 😍</h1>
+                <p class="final-msg">¡Me haces el hombre más feliz del universo!</p>
+                <p>Prepárate para el mejor 14 de febrero. Se hará todo lo que tú digas, mi reina. 🍓💘👸</p>
+                <div style="font-size: 60px;">👩‍❤️‍💋‍👨</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Inicializar posición del botón NO
+        const btnNo = document.getElementById('btn-no');
+        const btnYes = document.getElementById('btn-yes');
+        
+        function moveNo() {
+            const maxX = window.innerWidth - btnNo.offsetWidth - 20;
+            const maxY = window.innerHeight - btnNo.offsetHeight - 20;
+            
+            const newX = Math.random() * maxX;
+            const newY = Math.random() * maxY;
+            
+            btnNo.style.left = newX + 'px';
+            btnNo.style.top = newY + 'px';
+        }
+
+        // Colocar el NO inicialmente debajo del sí de forma segura
+        window.onload = () => {
+            const rect = btnYes.getBoundingClientRect();
+            btnNo.style.left = rect.left + (rect.width/2 - btnNo.offsetWidth/2) + 'px';
+            btnNo.style.top = (rect.bottom + 20) + 'px';
+        };
+
+        function celebrate() {
+            // Cambio de pantalla con animación
+            document.getElementById('ask-section').classList.add('hidden');
+            document.getElementById('response-section').style.display = 'block';
+            btnNo.classList.add('hidden');
+
+            // --- EXPLOSIÓN DE CONFETI PROFESIONAL ---
+            const duration = 15 * 1000;
+            const animationEnd = Date.now() + duration;
+            const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+            function randomInRange(min, max) {
+              return Math.random() * (max - min) + min;
+            }
+
+            const interval = setInterval(function() {
+              const timeLeft = animationEnd - Date.now();
+
+              if (timeLeft <= 0) {
+                return clearInterval(interval);
+              }
+
+              const particleCount = 50 * (timeLeft / duration);
+              // Confeti desde los lados
+              confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+              confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+            }, 250);
+
+            // Explosión de Emojis al inicio
+            confetti({
+                particleCount: 150,
+                spread: 70,
+                origin: { y: 0.6 },
+                shapes: ['circle'],
+                colors: ['#ff4d6d', '#ff758f', '#ffffff']
+            });
+        }
+    </script>
+</body>
+</html>
